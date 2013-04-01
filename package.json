@@ -1,0 +1,16 @@
+{
+  "name": "s3http"
+, "version": "0.0.1"
+, "author": {
+    "name": "Rob Vermaas"
+  , "email": "rob.vermaas@gmail.com"
+  }
+, "directories": {
+    "bin": "./bin"
+  }
+, "dependencies": {
+    "aws-sdk": "0.9.7-pre.8"
+  , "commander": "0.5.1"
+  , "http-auth": "1.2.7"
+  }
+}
