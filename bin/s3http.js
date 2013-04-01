@@ -39,8 +39,15 @@ var requestListener = function (req, res) {
   var handleRequest = function() {
     console.log(req.url);
     var params = { Bucket: program.bucket, Key: req.url.substring(1) };
-    var obj = s3.client.getObject(params);
-    obj.createReadStream().pipe(res);
+    var stream = s3.client.getObject(params).createReadStream();
+
+    var handleError = function(err) {
+      res.writeHead(err.statusCode);
+      res.end();
+    };
+
+    stream.on('error', handleError);
+    stream.pipe(res);
   };
 
   if (program.htpasswd) {
