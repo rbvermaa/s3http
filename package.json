@@ -9,7 +9,7 @@
     "bin": "./bin"
   }
 , "dependencies": {
-    "aws-sdk": "0.9.7-pre.8"
+    "aws-sdk": ">=1.2.0 <2"
   , "commander": "0.5.1"
   , "http-auth": "1.2.7"
   }
