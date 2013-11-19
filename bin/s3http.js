@@ -8,6 +8,7 @@ var express = require("express");
 var everyauth = require("everyauth");
 var S = require("string");
 var util = require("util");
+var crypto = require("crypto");
 
 program
   .version('0.1')
@@ -17,9 +18,6 @@ program
   .option('-g, --google', 'google authentication')
   .option('-d <domain>', 'google domain that is allowed')
   .parse(process.argv);
-
-
-console.log(util.inspect(program));
 
 var app = express();
 
@@ -44,7 +42,6 @@ if (program.google) {
      })
     .findOrCreateUser( function (session, token, extra, googleUser) {
       var promise = this.Promise();
-      console.log(util.inspect(googleUser));
       if ( ! S(googleUser.email).endsWith('@'+program.D) ) {
         return promise.fail(["Need to authenticate against "+program.D+" domain."]) ;
       }
@@ -54,7 +51,6 @@ if (program.google) {
       }
     })
     .sendResponse( function (res, data) {
-       console.log(util.inspect(data));
        if(!data.user) {
          return this.redirect(res, '/failure');
        };
@@ -64,7 +60,8 @@ if (program.google) {
 
   app.use(express.bodyParser());
   app.use(express.cookieParser());
-  app.use(express.session({secret: "SECRETIVE"}));
+  app.use(express.session({secret: crypto.randomBytes(64).toString()}));
+  
   app.use(everyauth.middleware());
 
   usersById = {}
