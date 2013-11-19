@@ -1,6 +1,6 @@
 {
   "name": "s3http"
-, "version": "0.0.1"
+, "version": "0.0.3"
 , "author": {
     "name": "Rob Vermaas"
   , "email": "rob.vermaas@gmail.com"
@@ -10,7 +10,11 @@
   }
 , "dependencies": {
     "aws-sdk": ">=1.2.0 <2"
-  , "commander": "0.5.1"
-  , "http-auth": "1.2.7"
+  , "commander": "2.0.0"
+  , "http-auth": "2.0.7"
+  , "express": "3.4.4"
+  , "everyauth": "0.4.5"
+  , "string": "1.6.1"
+  , "util": "0.4.9"
   }
 }
