@@ -30,6 +30,7 @@ if (program.htpasswd) {
 }
 
 if (program.google) {
+
   everyauth.everymodule.findUserById(function (req, id, callback) {
     callback(null, usersById[id]);
   });
@@ -90,7 +91,7 @@ app.all('/failure', function(req, res, next) {
 });
 
 app.all('*', function(req, res, next){
-  if(! req.loggedIn) {
+  if(program.google && ! req.loggedIn ) {
     res.redirect('/auth/google');
   }
   else {
