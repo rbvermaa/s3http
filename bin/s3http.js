@@ -16,7 +16,7 @@ program
   .option('-p, --port <port>', 'Port to serve (default: 8888)', parseInt)
   .option('-f, --htpasswd <file>', 'htpasswd file')
   .option('-g, --google', 'google authentication')
-  .option('-d <domain>', 'google domain that is allowed')
+  .option('-d <domains>', 'google domains that are allowed, separated by comma')
   .parse(process.argv);
 
 var app = express();
@@ -30,6 +30,7 @@ if (program.htpasswd) {
 }
 
 if (program.google) {
+  var allowed_domains = program.D.split(",");
 
   everyauth.everymodule.findUserById(function (req, id, callback) {
     callback(null, usersById[id]);
@@ -43,8 +44,9 @@ if (program.google) {
      })
     .findOrCreateUser( function (session, token, extra, googleUser) {
       var promise = this.Promise();
-      if ( ! S(googleUser.email).endsWith('@'+program.D) ) {
-        return promise.fail(["Need to authenticate against "+program.D+" domain."]) ;
+      var res_domain = googleUser.email.split("@")[1];
+      if ( allowed_domains.indexOf(res_domain) < 0 ) {
+        return promise.fail(["Need to authenticate against one of the following domains: "+program.D+"."]) ;
       }
       else {
         usersById[googleUser.id] = googleUser;
